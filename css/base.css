@@ -15,6 +15,7 @@ body {
     max-width: 1000px;
     height: auto;
     margin: 0 auto;
+position: relative;
 }
 
 h1 {
@@ -79,4 +80,20 @@ button {
     border: 0;
     cursor: pointer;
     color: #333;
+}
+.task-detail-mask,.task-detail{
+   position: absolute;
+}
+.task-detail{
+    background: #fff;
+    padding: 10px;
+    bottom: 0;
+    right: 0;
+}
+.task-detail-mask{
+    top: 0;
+    bottom:0;
+    right: 0;
+    left: 0;
+    background: rgba(30, 30, 30, .4);
 }
