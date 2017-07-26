@@ -28,17 +28,22 @@
         /* 将新Task推入到task_list */
         task_list.push(new_task)
         /* 更新localStorate */
-        store.set('task_list', task_list)
+        store.set('task_list', task_list);
+
+        log('task_list',task_list)
         return true;
     }
 
     function init() {
         task_list = store.get('task_list') || [];
+        if(task_list.length){
+            render_task_list();
+        }
     }
 
     function render_task_list() {
-        var $task_list = $('.task-list');
-
+        var $task_list = $('.tasks-list');
+        $task_list.html('')
         for (var i = 0; i < task_list.length; i++) {
             var $task = render_task_tpl(task_list[i])
             $task_list.append($task)
@@ -47,6 +52,7 @@
     }
 
     function render_task_tpl(data) {
+
         var list_item_tpl = `
                 <div class="task-item">		
                     <span><input type="checkbox"></span>
