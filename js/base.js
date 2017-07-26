@@ -50,7 +50,7 @@
         var list_item_tpl = `
                 <div class="task-item">		
                     <span><input type="checkbox"></span>
-                    <span class="task-content">'{{data.content}}'</span>
+                    <span class="task-content">'${data.content}'</span>
                     <span>删除</span>
                     <span>详细</span>
                 </div>
