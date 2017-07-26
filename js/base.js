@@ -11,6 +11,7 @@
 
     init()
     $form_add_task.on('submit', function (e) {
+        var new_task = {}
         /* 禁用默认行为 */
         e.preventDefault();
         /* 获取新Task的值 */
@@ -30,13 +31,13 @@
         /* 更新localStorate */
         store.set('task_list', task_list);
 
-        log('task_list',task_list)
+        log('task_list', task_list)
         return true;
     }
 
     function init() {
         task_list = store.get('task_list') || [];
-        if(task_list.length){
+        if (task_list.length) {
             render_task_list();
         }
     }
