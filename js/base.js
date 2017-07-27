@@ -6,21 +6,21 @@
     var new_task = {}
     var task_list = {}
 
-
-
-
     init()
     $form_add_task.on('submit', function (e) {
         var new_task = {}
         /* 禁用默认行为 */
         e.preventDefault();
         /* 获取新Task的值 */
-        new_task.content = $(this).find('input[name=content]').val();
+        var $input = $(this).find('input[name=content]')
+        new_task.content = $input.val();
+
         /* 如果新Task的值为空 则直接返回 否则继续执行 */
         if (!new_task.content) return;
         /* 存入新Task */
         if (add_task(new_task)) {
-            render_task_list()
+            render_task_list();
+            $input.val(null)
         }
 
     })
@@ -30,8 +30,6 @@
         task_list.push(new_task)
         /* 更新localStorate */
         store.set('task_list', task_list);
-
-        log('task_list', task_list)
         return true;
     }
 
@@ -57,9 +55,11 @@
         var list_item_tpl = `
                 <div class="task-item">		
                     <span><input type="checkbox"></span>
-                    <span class="task-content">'${data.content}'</span>
-                    <span>删除</span>
-                    <span>详细</span>
+                    <span class="task-content">${data.content}</span>
+                    <span class="float-right">
+                        <span class="action"> 删除</span>
+                        <span class="action"> 详细</span>
+                    </span>
                 </div>
             `
         return $(list_item_tpl)

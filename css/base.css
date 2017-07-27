@@ -16,6 +16,7 @@ body {
     height: auto;
     margin: 0 auto;
     position: relative;
+    padding: 0 10px;
 }
 
 h1 {
@@ -25,7 +26,9 @@ h1 {
 .tasks-list {
     margin: 10px 0;
 }
-
+.float-right{
+    float: right;
+}
 input,
 .task-item,
 .task-detail-mask,
@@ -129,4 +132,14 @@ button {
 textarea {
     min-height: 200px;
     background: #999;
+}
+.task-content{
+    margin-left: 10px;
+}
+.action{
+    color: #888;
+    font-size: 90%;
+}
+.action:hover{
+    color: #333;
 }
