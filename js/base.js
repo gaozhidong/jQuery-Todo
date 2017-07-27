@@ -3,8 +3,10 @@
     'use strict';
     var log = console.log.bind(console);
     var $form_add_task = $('.add-task')
-    var new_task = {}
     var task_list = {}
+    var $delete_task
+
+
 
     init()
     $form_add_task.on('submit', function (e) {
@@ -23,6 +25,12 @@
             $input.val(null)
         }
 
+    })
+
+    $delete_task.on('click', function () {
+        log(1)
+        var $this = $(this);
+        var item = $this.parent().parent()
     })
 
     function add_task(new_task) {
@@ -64,16 +72,17 @@
             $task_list.append($task)
         }
 
+        $delete_task = $('.action.delete')
+        log($delete_task)
     }
 
     function render_task_item(data, index) {
-        log(index)
         var list_item_tpl = `
                 <div class="task-item" data-index = "${index}">		
                     <span><input type="checkbox"></span>
                     <span class="task-content">${data.content}</span>
                     <span class="float-right">
-                        <span class="action"> 删除</span>
+                        <span class="action delete"> 删除</span>
                         <span class="action"> 详细</span>
                     </span>
                 </div>
