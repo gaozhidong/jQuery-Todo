@@ -3,8 +3,11 @@
     'use strict';
     var log = console.log.bind(console);
     var $form_add_task = $('.add-task'),
-        task_list = {},
-        $delete_task
+        task_list = [],
+        $task_delete,
+        $task_detail,
+        $task_detail = $('task-detail'),
+        $task_detail_mask = $('.task-detail-mask')
 
 
 
@@ -28,9 +31,20 @@
             $input.val(null)
         }
     }
+
+    function listion_task_detail() {
+        $task_detail.on('click', function () {
+            var $this = $(this)
+            var $item = $this.parent().parent()
+            var index = $item.data('index')
+            log("index", index)
+        })
+    }
+
+
     /* 查找并监听所有删除按钮的点击事件 */
     function listen_task_delete() {
-        $delete_task.on('click', function () {
+        $task_delete.on('click', function () {
             var $this = $(this);
             /* 找到删除按钮所在的task元素 */
             var item = $this.parent().parent();
@@ -83,8 +97,10 @@
             $task_list.append($task)
         }
 
-        $delete_task = $('.action.delete')
+        $task_delete = $('.action.delete')
+        $task_detail = $('.action.detail')
         listen_task_delete();
+        listion_task_detail()
     }
     /* 渲染单条Task模板 */
     function render_task_item(data, index) {
@@ -95,7 +111,7 @@
                     <span class="task-content">${data.content}</span>
                     <span class="float-right">
                         <span class="action delete"> 删除</span>
-                        <span class="action"> 详细</span>
+                        <span class="action detail"> 详细</span>
                     </span>
                 </div>
             `
