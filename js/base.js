@@ -19,7 +19,7 @@
         if (!new_task.content) return;
         /* 存入新Task */
         if (add_task(new_task)) {
-            render_task_list();
+            //render_task_list();
             $input.val(null)
         }
 
@@ -29,9 +29,25 @@
         /* 将新Task推入到task_list */
         task_list.push(new_task)
         /* 更新localStorate */
-        store.set('task_list', task_list);
+        refresh_task_list()
         return true;
     }
+    /* 刷新locaStroage数据并渲染tpl */
+    function refresh_task_list() {
+        store.set('task_list', task_list);
+        render_task_list()
+    }
+    //删除task
+    function delete_task(index) {
+        /* 如果没有index 或者 index 不存在直接返回 */
+        if (!index || !task_list[index]) return;
+
+        delete task_list[index];
+        /* 更新localStorate */
+        refresh_task_list();
+
+    }
+
 
     function init() {
         task_list = store.get('task_list') || [];
@@ -44,16 +60,16 @@
         var $task_list = $('.tasks-list');
         $task_list.html('')
         for (var i = 0; i < task_list.length; i++) {
-            var $task = render_task_tpl(task_list[i])
+            var $task = render_task_item(task_list[i], i)
             $task_list.append($task)
         }
 
     }
 
-    function render_task_tpl(data) {
-
+    function render_task_item(data, index) {
+        log(index)
         var list_item_tpl = `
-                <div class="task-item">		
+                <div class="task-item" data-index = "${index}">		
                     <span><input type="checkbox"></span>
                     <span class="task-content">${data.content}</span>
                     <span class="float-right">
