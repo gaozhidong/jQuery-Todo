@@ -27,11 +27,19 @@
 
     })
 
-    $delete_task.on('click', function () {
-        log(1)
-        var $this = $(this);
-        var item = $this.parent().parent()
-    })
+    function listen_task_delete() {
+        $delete_task.on('click', function () {
+            var $this = $(this);
+            var item = $this.parent().parent();
+            var index = item.data('index');
+
+            var tmp = confirm('确定删除？')
+
+            tmp ? delete_task(index) : null;
+
+        })
+    }
+
 
     function add_task(new_task) {
         /* 将新Task推入到task_list */
@@ -48,7 +56,7 @@
     //删除task
     function delete_task(index) {
         /* 如果没有index 或者 index 不存在直接返回 */
-        if (!index || !task_list[index]) return;
+        if (index === undefined || !task_list[index]) return;
 
         delete task_list[index];
         /* 更新localStorate */
@@ -61,6 +69,7 @@
         task_list = store.get('task_list') || [];
         if (task_list.length) {
             render_task_list();
+            
         }
     }
 
@@ -73,10 +82,11 @@
         }
 
         $delete_task = $('.action.delete')
-        log($delete_task)
+        listen_task_delete();
     }
 
     function render_task_item(data, index) {
+        if (!data || !index) return;
         var list_item_tpl = `
                 <div class="task-item" data-index = "${index}">		
                     <span><input type="checkbox"></span>
