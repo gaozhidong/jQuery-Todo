@@ -11,6 +11,7 @@ body {
     color: #fff;
 }
 
+
 .container {
     max-width: 1000px;
     height: auto;
@@ -26,12 +27,15 @@ h1 {
 .tasks-list {
     margin: 10px 0;
 }
-.float-right{
+
+.float-right {
     float: right;
 }
+
 input,
 .task-item,
 .task-detail-mask,
+.task-detail,
 textarea,
 button {
     border-radius: 4px;
@@ -67,8 +71,11 @@ input[type=date]:focus {
     margin-right: 1%;
 }
 
-.add-task [type=submit] {
+[type=submit] {
     background: #46b1e4;
+}
+
+.add-task [type=submit] {
     width: 15%;
 }
 
@@ -109,7 +116,10 @@ button {
     height: 100%;
     bottom: 0;
     right: 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
+    border-radius: 4px 0 0 4px;
 }
+
 
 .task-detail .content {
     padding: 10px;
@@ -117,29 +127,33 @@ button {
     cursor: pointer;
 }
 
-.task-detail>* {
+.task-detail .input-item {
     margin-bottom: 10px;
 }
 
 .task-detail-mask {
+    position: fixed;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
-    background: rgba(30, 30, 30, .4);
+    /* background: rgba(30, 30, 30, .4); */
 }
 
 textarea {
     min-height: 200px;
     background: #999;
 }
-.task-content{
+
+.task-content {
     margin-left: 10px;
 }
-.action{
+
+.action {
     color: #888;
     font-size: 90%;
 }
-.action:hover{
+
+.action:hover {
     color: #333;
 }

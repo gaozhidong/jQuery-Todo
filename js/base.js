@@ -9,7 +9,9 @@
         $task_detail = $('.task-detail'),
         $task_detail_mask = $('.task-detail-mask'),
         current_index,
-        $update_form
+        $update_form,
+        $task_detail_content,
+        $task_detail_content_input
 
 
 
@@ -54,7 +56,7 @@
     function updated_task(index, data) {
         if (!index || !task_list[index]) return;
 
-        task_list[index] = $.merge({}, task_list[index], data);
+        task_list[index] = /* $.merge({}, task_list[index], */ data;
         refresh_task_list()
 
     }
@@ -72,17 +74,20 @@
             <form>
 				<div class="content">					
 					${item.content}
-				</div>
+                </div>
+                <div class="input-item">
+                    <input style="display:none;" type="text" name="content" value="${item.content || ''}" >
+                </div>
 				<div>
-					<div class="desc">
-						<textarea name="desc" value="${item.desc}" ></textarea>
+					<div class="desc input-item" >
+						<textarea name="desc" >${item.desc  || '' }</textarea>
 					</div>
 				</div>				
-				<div class="remind">
-					<input type="date">
+				<div class="remind input-item">
+					<input name="remind_date" type="date" value="${item.remind_date}">
                 </div>
-                <div>
-                    <button type="submitfd">更新</button>
+                <div class="input-item">
+                    <button type="submit">更新</button>
                 <div>
 			</form>
         `
@@ -90,10 +95,25 @@
         $task_detail.html(null)
         $task_detail.html(tpl)
         $update_form = $task_detail.find('form')
+
+
+        $task_detail_content = $update_form.find('.content')
+        $task_detail_content_input = $update_form.find('[name=content]')
+
+        $task_detail_content.on('dblclick', function () {
+            $task_detail_content_input.show()
+            $task_detail_content.hide()
+        })
+
+
         $update_form.on('submit', function (e) {
             e.preventDefault();
-            log(1)
-
+            var data = {};
+            data.content = $(this).find('[name= content]').val();
+            data.desc = $(this).find('[name=desc]').val();
+            data.remind_date = $(this).find('[name=remind_date]').val();
+            updated_task(index, data)
+            hide_task_detail();
         })
 
     }
@@ -151,7 +171,7 @@
         $task_list.html('')
         for (var i = 0; i < task_list.length; i++) {
             var $task = render_task_item(task_list[i], i)
-            $task_list.append($task)
+            $task_list.prepend($task)
         }
 
         $task_delete_trigger = $('.action.delete')
