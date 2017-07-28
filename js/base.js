@@ -7,7 +7,10 @@
         $task_delete_trigger,
         $task_detail_trigger,
         $task_detail = $('.task-detail'),
-        $task_detail_mask = $('.task-detail-mask')
+        $task_detail_mask = $('.task-detail-mask'),
+        current_index,
+        $update_form
+
 
 
     init()
@@ -40,11 +43,20 @@
             show_task_detail(index)
         })
     }
-
+    /* 查看Task详情 */
     function show_task_detail(index) {
-        render_task_detail(index)
+        render_task_detail(index);
+        current_index = index
         $task_detail.show();
         $task_detail_mask.show();
+    }
+
+    function updated_task(index, data) {
+        if (!index || !task_list[index]) return;
+
+        task_list[index] = $.merge({}, task_list[index], data);
+        refresh_task_list()
+
     }
 
     function hide_task_detail() {
@@ -52,27 +64,38 @@
         $task_detail_mask.hide();
     }
 
+    /* 渲染指定Task的详细信息 */
     function render_task_detail(index) {
-        if(index === undefined || !task_list[index]) return;
+        if (index === undefined || !task_list[index]) return;
         var item = task_list[index]
         var tpl = `
-            <div>
+            <form>
 				<div class="content">					
 					${item.content}
 				</div>
 				<div>
 					<div class="desc">
-						<textarea value="${item.desc}" ></textarea>
+						<textarea name="desc" value="${item.desc}" ></textarea>
 					</div>
 				</div>				
 				<div class="remind">
 					<input type="date">
-				</div>
-			</div>
+                </div>
+                <div>
+                    <button type="submitfd">更新</button>
+                <div>
+			</form>
         `
 
         $task_detail.html(null)
         $task_detail.html(tpl)
+        $update_form = $task_detail.find('form')
+        $update_form.on('submit', function (e) {
+            e.preventDefault();
+            log(1)
+
+        })
+
     }
 
 
