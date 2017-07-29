@@ -203,16 +203,32 @@
         }
         task_remind_check();
     }
-function task_remind_check(){
-    var current_timestam;
-    for(var i = 0; i< task_list.length;i++){
-        var item = get(i)
-        if(!item|| !item.remind_date) continue;
-        current_timestam  =(new Date()).getTime(); 
-        log(current_timestam)
-    }
-}
 
+    function task_remind_check() {
+        //var current_timestamp;
+        var itl = setInterval(function () {
+
+            for (var i = 0; i < task_list.length; i++) {
+                var item = get(i); //获取现在的时间
+                var task_timestamp; //保存创建的时间
+                if (!item || !item.remind_date) continue;
+
+                var current_timestamp = (new Date()).getTime();
+                task_timestamp = (new Date(item.remind_date)).getTime()
+                
+                var time_difference = current_timestamp - task_timestamp ;//两个时间差
+
+                if (time_difference >= 1) {
+                    notify(item.content)
+                }
+            }
+        }, 1000)
+
+    }
+
+    function notify() {
+
+    }
     /* 渲染所有Task模板 */
     function render_task_list() {
         var $task_list = $('.tasks-list');
@@ -221,16 +237,16 @@ function task_remind_check(){
         for (var i = 0; i < task_list.length; i++) {
             var item = task_list[i];
             if (item && item.complete) {
-                complete_items[i]=item
+                complete_items[i] = item
             } else {
                 var $task = render_task_item(item, i)
                 $task_list.prepend($task)
             }
         }
         for (var j = 0; j < complete_items.length; j++) {
-             $task = render_task_item(complete_items[j], j)
+            $task = render_task_item(complete_items[j], j)
             if (!$task) continue;
-           
+
             $task.addClass('completed');
             $task_list.append($task);
         }
@@ -258,14 +274,14 @@ function task_remind_check(){
             </div>
             `
              */
-             '<div class="task-item" data-index="' + index + '">' +
+            '<div class="task-item" data-index="' + index + '">' +
             '<span><input class="complete" ' + (data.complete ? 'checked' : '') + ' type="checkbox"></span>' +
             '<span class="task-content">' + data.content + '</span>' +
             '<span class="float-right">' +
             '<span class="action delete"> 删除</span>' +
             '<span class="action detail"> 详细</span>' +
             '</span>' +
-            '</div>'; 
+            '</div>';
         return $(list_item_tpl)
     }
 })()
