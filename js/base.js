@@ -114,8 +114,9 @@
 						<textarea name="desc" >${item.desc  || '' }</textarea>
 					</div>
 				</div>				
-				<div class="remind input-item">
-					<input name="remind_date" type="date" value="${item.remind_date}">
+                <div class="remind input-item">
+                    <label style="display:block;margin:10px;">提醒时间</label>
+					<input class="datetime" name="remind_date" type="text" value="${item.remind_date || ''}">
                 </div>
                 <div class="input-item">
                     <button type="submit">更新</button>
@@ -123,8 +124,9 @@
 			</form>
         `
         /* 用新模板替换替换旧模板 */
-        $task_detail.html(null)
-        $task_detail.html(tpl)
+        $task_detail.html(null);
+        $task_detail.html(tpl);
+        $('.datetime').datetimepicker();
         /* 选中其中的form元素，因为之后会使用其监听submit事件 */
         $update_form = $task_detail.find('form')
         /* 选中显示Task内容的元素 */
@@ -198,9 +200,19 @@
         task_list = store.get('task_list') || [];
         if (task_list.length) {
             render_task_list();
-
         }
+        task_remind_check();
     }
+function task_remind_check(){
+    var current_timestam;
+    for(var i = 0; i< task_list.length;i++){
+        var item = get(i)
+        if(!item|| !item.remind_date) continue;
+        current_timestam  =(new Date()).getTime(); 
+        log(current_timestam)
+    }
+}
+
     /* 渲染所有Task模板 */
     function render_task_list() {
         var $task_list = $('.tasks-list');
@@ -234,14 +246,26 @@
     function render_task_item(data, index) {
         if (!data || !index) return;
         var list_item_tpl =
-            '<div class="task-item" data-index="' + index + '">' +
+            /*  模板字符串中 如何使用三目判断
+            `
+            <div class="task-item" data-index="' + index + '">
+                <span><input class="complete" $ {data.complete} ? 'checked' : '' type="checkbox"></span>
+                <span class="task-content"> ${data.content}   </span>
+                <span class="float-right">
+                    <span class="action delete"> 删除</span>
+                    <span class="action detail"> 详细</span>
+                </span>
+            </div>
+            `
+             */
+             '<div class="task-item" data-index="' + index + '">' +
             '<span><input class="complete" ' + (data.complete ? 'checked' : '') + ' type="checkbox"></span>' +
             '<span class="task-content">' + data.content + '</span>' +
             '<span class="float-right">' +
             '<span class="action delete"> 删除</span>' +
             '<span class="action detail"> 详细</span>' +
             '</span>' +
-            '</div>';
+            '</div>'; 
         return $(list_item_tpl)
     }
 })()
