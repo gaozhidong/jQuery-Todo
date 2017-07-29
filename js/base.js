@@ -36,31 +36,39 @@
             $input.val(null)
         }
     }
-
+    /* 监听打开Task详情事件 */
     function listen_task_detail() {
+        var index;
+        $('.task-item').on('dblclick', function () {
+            index = $(this).data('index')
+            show_task_detail(index);
+        })
+
         $task_detail_trigger.on('click', function () {
             var $this = $(this)
             var $item = $this.parent().parent()
-            var index = $item.data('index')
+            index = $item.data('index')
             show_task_detail(index)
         })
     }
     /* 查看Task详情 */
     function show_task_detail(index) {
+        /* 生成详情模板 */
         render_task_detail(index);
         current_index = index
+        /* 显示详情模板（默认隐藏） */
         $task_detail.show();
         $task_detail_mask.show();
     }
-
+    /* 更新Task */
     function updated_task(index, data) {
         if (!index || !task_list[index]) return;
 
-        task_list[index] = /* $.merge({}, task_list[index], */ data;
+        task_list[index] = data;
         refresh_task_list()
 
     }
-
+    /* 隐藏Task 详情模板*/
     function hide_task_detail() {
         $task_detail.hide();
         $task_detail_mask.hide();
@@ -91,15 +99,18 @@
                 <div>
 			</form>
         `
-
+        /* 用新模板替换替换旧模板 */
         $task_detail.html(null)
         $task_detail.html(tpl)
+        /* 选中其中的form元素，因为之后会使用其监听submit事件 */
         $update_form = $task_detail.find('form')
-
+        /* 选中显示Task内容的元素 */
 
         $task_detail_content = $update_form.find('.content')
+        /* 选中显示Task input 元素 */
         $task_detail_content_input = $update_form.find('[name=content]')
 
+        /* 双击内容显示input  隐藏自己 */
         $task_detail_content.on('dblclick', function () {
             $task_detail_content_input.show()
             $task_detail_content.hide()
@@ -109,9 +120,11 @@
         $update_form.on('submit', function (e) {
             e.preventDefault();
             var data = {};
+            /* 获取表单中各个input的值 */
             data.content = $(this).find('[name= content]').val();
             data.desc = $(this).find('[name=desc]').val();
             data.remind_date = $(this).find('[name=remind_date]').val();
+
             updated_task(index, data)
             hide_task_detail();
         })
