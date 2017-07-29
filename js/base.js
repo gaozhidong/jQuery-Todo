@@ -209,17 +209,19 @@
         for (var i = 0; i < task_list.length; i++) {
             var item = task_list[i];
             if (item && item.complete) {
-                complete_items.push(item)
+                complete_items[i]=item
             } else {
                 var $task = render_task_item(item, i)
                 $task_list.prepend($task)
             }
         }
-         for (var j = 0; j < complete_items.length; j++) {
-            $task = render_task_item(item, j)
-            
-            $task_list.append($task)
-        } 
+        for (var j = 0; j < complete_items.length; j++) {
+             $task = render_task_item(complete_items[j], j)
+            if (!$task) continue;
+           
+            $task.addClass('completed');
+            $task_list.append($task);
+        }
 
         $task_delete_trigger = $('.action.delete');
         $task_detail_trigger = $('.action.detail');
@@ -230,14 +232,14 @@
     }
     /* 渲染单条Task模板 */
     function render_task_item(data, index) {
-        if (!data || !index === undefined) return;
-        var list_item_tpl = 
+        if (!data || !index) return;
+        var list_item_tpl =
             '<div class="task-item" data-index="' + index + '">' +
             '<span><input class="complete" ' + (data.complete ? 'checked' : '') + ' type="checkbox"></span>' +
             '<span class="task-content">' + data.content + '</span>' +
             '<span class="float-right">' +
-                '<span class="action delete"> 删除</span>' +
-                '<span class="action detail"> 详细</span>' +
+            '<span class="action delete"> 删除</span>' +
+            '<span class="action detail"> 详细</span>' +
             '</span>' +
             '</div>';
         return $(list_item_tpl)
