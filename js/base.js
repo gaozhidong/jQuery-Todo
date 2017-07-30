@@ -211,7 +211,7 @@
             for (var i = 0; i < task_list.length; i++) {
                 var item = get(i); //获取现在的时间
                 var task_timestamp; //保存创建的时间
-                if (!item || !item.remind_date) continue;
+                if (!item || !item.remind_date || item.informed) continue;
 
                 var current_timestamp = (new Date()).getTime();
                 task_timestamp = (new Date(item.remind_date)).getTime()
@@ -219,6 +219,7 @@
                 var time_difference = current_timestamp - task_timestamp ;//两个时间差
 
                 if (time_difference >= 1) {
+                    updated_task(i,{informed:true});
                     notify(item.content)
                 }
             }
@@ -227,7 +228,7 @@
     }
 
     function notify() {
-
+        log(1)
     }
     /* 渲染所有Task模板 */
     function render_task_list() {
