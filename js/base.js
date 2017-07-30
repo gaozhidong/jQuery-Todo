@@ -12,13 +12,22 @@
         $update_form,
         $task_detail_content,
         $task_detail_content_input,
-        $checkbox_complete
+        $checkbox_complete,
+        $msg = $('.msg'),
+        $msg_content = $msg.find('.msg-content'),
+        $msg_confirm = $msg.find('button')
 
 
 
     init()
     $form_add_task.on('submit', on_add_task_from_submit)
     $task_detail_mask.on('click', hide_task_detail)
+
+    function listen_msg_event() {
+        $msg_confirm.on('click', function () {
+            hide_msg();
+        })
+    }
 
     function on_add_task_from_submit(e) {
         var new_task = {},
@@ -198,6 +207,7 @@
 
     function init() {
         task_list = store.get('task_list') || [];
+        listen_msg_event();
         if (task_list.length) {
             render_task_list();
         }
@@ -205,9 +215,9 @@
     }
 
     function task_remind_check() {
+        show_msg()
         //var current_timestamp;
         var itl = setInterval(function () {
-
             for (var i = 0; i < task_list.length; i++) {
                 var item = get(i); //获取现在的时间
                 var task_timestamp; //保存创建的时间
@@ -215,20 +225,31 @@
 
                 var current_timestamp = (new Date()).getTime();
                 task_timestamp = (new Date(item.remind_date)).getTime()
-                
-                var time_difference = current_timestamp - task_timestamp ;//两个时间差
+
+                var time_difference = current_timestamp - task_timestamp; //两个时间差
 
                 if (time_difference >= 1) {
-                    updated_task(i,{informed:true});
-                    notify(item.content)
+                    updated_task(i, {
+                        informed: true
+                    });
+                    show_msg(item.content)
                 }
             }
         }, 1000)
 
     }
 
-    function notify() {
-        log(1)
+    function show_msg(msg) {
+
+        $msg_content.html(msg);
+        $msg.show()
+
+    }
+
+    function hide_msg(msg) {
+
+        $msg.hide()
+
     }
     /* 渲染所有Task模板 */
     function render_task_list() {

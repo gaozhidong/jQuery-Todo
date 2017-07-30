@@ -171,3 +171,10 @@ textarea {
 .action:hover {
     color: #333;
 }
+.msg{
+    display: none;
+    background: #ffe364;
+    text-align: center;
+    padding: 10px;
+
+}
