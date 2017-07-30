@@ -176,5 +176,15 @@ textarea {
     background: #ffe364;
     text-align: center;
     padding: 10px;
-
+    color: #333;  
+}
+.anchor{
+    cursor: pointer;
+}
+.anchor:hover{
+    color: red;
+    cursor: pointer;
+}
+.alerter{
+    opacity: 0;
 }

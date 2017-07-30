@@ -15,7 +15,8 @@
         $checkbox_complete,
         $msg = $('.msg'),
         $msg_content = $msg.find('.msg-content'),
-        $msg_confirm = $msg.find('button')
+        $msg_confirm = $msg.find('.confirmed'),
+        $alerter = $('.alerter')
 
 
 
@@ -215,7 +216,6 @@
     }
 
     function task_remind_check() {
-        show_msg()
         //var current_timestamp;
         var itl = setInterval(function () {
             for (var i = 0; i < task_list.length; i++) {
@@ -242,6 +242,7 @@
     function show_msg(msg) {
 
         $msg_content.html(msg);
+        $alerter.get(0).play()
         $msg.show()
 
     }
