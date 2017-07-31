@@ -70,17 +70,16 @@
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_js__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__base_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__base_js__);
 
 __webpack_require__(3);
-__WEBPACK_IMPORTED_MODULE_0__base_js___default()()
+Object(__WEBPACK_IMPORTED_MODULE_0__base_js__["a" /* default */])()
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function($) {;
-(function () {
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony default export */ __webpack_exports__["a"] = (function () {
     'use strict';
     var log = console.log.bind(console);
 
@@ -100,7 +99,8 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
         $msg = $('.msg'),
         $msg_content = $msg.find('.msg-content'),
         $msg_confirm = $msg.find('.confirmed'),
-        $alerter = $('.alerter');
+        $alerter = $('.alerter'),
+        $detail_cancel;
 
 
 
@@ -123,15 +123,6 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
         }
         dfd = $.Deferred();
 
-        /* $box = $('<div>' +
-            '<div class="pop-title">' + conf.title + '</div>' +
-            '<div class="pop-content">' +
-            '<div>' +
-            '<button style="margin-right: 5px;" class="primary confirm">确定</button>' +
-            '<button class="cancel">取消</button>' +
-            '</div>' +
-            '</div>' +
-            '</div>') */
         $box = $(
                 `<div>
                     <div class="pop-title"> ${conf.title }  </div>
@@ -251,7 +242,9 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
         new_task.content = $input.val();
 
         /* 如果新Task的值为空 则直接返回 否则继续执行 */
-        if (!new_task.content) return;
+        if (!new_task.content) {
+            return;
+        }
         /* 存入新Task */
         if (add_task(new_task)) {
             //render_task_list();
@@ -261,10 +254,6 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     /* 监听打开Task详情事件 */
     function listen_task_detail() {
         var index;
-        $('.task-item').on('dblclick', function () {
-            index = $(this).data('index')
-            show_task_detail(index);
-        })
 
         $task_detail_trigger.on('click', function () {
             var $this = $(this)
@@ -277,9 +266,9 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     function listen_checkbox_complete() {
         $checkbox_complete.on('click', function () {
             var $this = $(this)
-
             var index = $this.parent().parent().data('index')
             var item = get(index)
+
             if (item.complete) {
                 updated_task(index, {
                     complete: false
@@ -308,7 +297,9 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     }
     /* 更新Task */
     function updated_task(index, data) {
-        if (!index || !task_list[index]) return;
+        if (!index || !task_list[index]) {
+            return
+        };
         task_list[index] = $.extend({}, task_list[index], data);
         refresh_task_list()
     }
@@ -320,8 +311,10 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
 
     /* 渲染指定Task的详细信息 */
     function render_task_detail(index) {
-        if (index === undefined || !task_list[index]) return;
-        var item = task_list[index]
+        if (index === undefined || !task_list[index]) {
+            return
+        };
+        var item = task_list[index];
         var tpl = `
             <form>
 				<div class="content">					
@@ -344,8 +337,10 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
                 <div>
 			</form>
         `
-        /* 用新模板替换替换旧模板 */
+        /* 清空Task详情模板 */
         $task_detail.html(null);
+
+        /* 用新模板替换替换旧模板 */
         $task_detail.html(tpl);
         $('.datetime').datetimepicker();
         /* 选中其中的form元素，因为之后会使用其监听submit事件 */
@@ -357,13 +352,13 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
         $task_detail_content_input = $update_form.find('[name=content]')
 
         /* 双击内容显示input  隐藏自己 */
-        $task_detail_content.on('dblclick', function () {
+        $task_detail_content.on('dblclick',  ()=> {
             $task_detail_content_input.show()
             $task_detail_content.hide()
         })
 
 
-        $update_form.on('submit', function (e) {
+        $update_form.on('submit',  (e) =>{
             e.preventDefault();
             var data = {};
             /* 获取表单中各个input的值 */
@@ -374,13 +369,13 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
             updated_task(index, data)
             hide_task_detail();
         })
-
+        $detail_cancel.on('click', hide_task_detail);
     }
 
 
     /* 查找并监听所有删除按钮的点击事件 */
     function listen_task_delete() {
-        $task_delete_trigger.on('click', function () {
+        $task_delete_trigger.on('click',  ()=> {
             var $this = $(this);
             /* 找到删除按钮所在的task元素 */
             var item = $this.parent().parent();
@@ -410,7 +405,7 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     /* 删除一条Task */
     function delete_task(index) {
         /* 如果没有index 或者 index 不存在直接返回 */
-        if (index === undefined || !task_list[index]) return;
+        if (index === undefined || !task_list[index]) {return;}
 
         delete task_list[index];
         /* 更新localStorate */
@@ -429,12 +424,11 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     }
 
     function task_remind_check() {
-        //var current_timestamp;
         var itl = setInterval(function () {
             for (var i = 0; i < task_list.length; i++) {
                 var item = get(i); //获取现在的时间
                 var task_timestamp; //保存创建的时间
-                if (!item || !item.remind_date || item.informed) continue;
+                if (!item || !item.remind_date || item.informed){ continue;}
 
                 var current_timestamp = (new Date()).getTime();
                 task_timestamp = (new Date(item.remind_date)).getTime()
@@ -453,6 +447,7 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     }
 
     function show_msg(msg) {
+        if (!msg) {return;}
         $msg_content.html(msg);
         $alerter.get(0).play()
         $msg.show()
@@ -479,7 +474,7 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
         }
         for (var j = 0; j < complete_items.length; j++) {
             $task = render_task_item(complete_items[j], j)
-            if (!$task) continue;
+            if (!$task) {continue;}
 
             $task.addClass('completed');
             $task_list.append($task);
@@ -494,7 +489,7 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
     }
     /* 渲染单条Task模板 */
     function render_task_item(data, index) {
-        if (!data || !index) return;
+        if (!data || !index===undefined) {return};
         var list_item_tpl =
             /*  模板字符串中 如何使用三目判断
             `
@@ -516,10 +511,11 @@ __WEBPACK_IMPORTED_MODULE_0__base_js___default()()
             '<span class="action detail"> 详细</span>' +
             '</span>' +
             '</div>';
+
         return $(list_item_tpl)
     }
-})()
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 2 */
