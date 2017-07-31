@@ -88,7 +88,7 @@ export default function () {
             right: 0
         });
 
-        timer = setInterval(function () {
+        timer = setInterval( ()=> {
             if (confirmed !== undefined) {
                 dfd.resolve(confirmed);
                 clearInterval(timer);
@@ -146,7 +146,7 @@ export default function () {
     //弹窗结束
 
     function listen_msg_event() {
-        $msg_confirm.on('click', function () {
+        $msg_confirm.on('click',  ()=> {
             hide_msg();
         })
     }
@@ -174,7 +174,7 @@ export default function () {
     function listen_task_detail() {
         var index;
 
-        $task_detail_trigger.on('click', function () {
+        $task_detail_trigger.on('click',  ()=> {
             var $this = $(this)
             var $item = $this.parent().parent()
             index = $item.data('index')
@@ -183,7 +183,7 @@ export default function () {
     }
     /* 监听完成Task 事件 */
     function listen_checkbox_complete() {
-        $checkbox_complete.on('click', function () {
+        $checkbox_complete.on('click', ()=>  {
             var $this = $(this)
             var index = $this.parent().parent().data('index')
             var item = get(index)
@@ -343,7 +343,7 @@ export default function () {
     }
 
     function task_remind_check() {
-        var itl = setInterval(function () {
+        var itl = setInterval(()=>  {
             for (var i = 0; i < task_list.length; i++) {
                 var item = get(i); //获取现在的时间
                 var task_timestamp; //保存创建的时间
